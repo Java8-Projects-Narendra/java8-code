@@ -5,7 +5,11 @@ import com.java.model.Hosting;
 import com.java.model.Person;
 import com.java.model.Student;
 
+import java.io.BufferedReader;
+import java.io.IOException;
 import java.math.BigDecimal;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.*;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -314,6 +318,110 @@ public class Runner {
             //My : when returned value is optional the use flatmap , when returned value is not optional then use map
             //http://www.mkyong.com/java8/java-8-optional-in-depth/
             //https://www.baeldung.com/java-optional
+
+
+        System.out.println("----------------Generate random number using java.util.Random.ints-------------------");
+        //------------------------------------------------------------------
+        int min =10;
+        int max =20;
+        Random r = new Random();
+        int randomVal = r.ints(min, (max + 1)).findFirst().getAsInt();
+        System.out.println(randomVal);
+
+        System.out.println("----------------StringJoiner  and String.join and Collectors.joining-------------------");
+        //------------------------------------------------------------------
+        StringJoiner sj = new StringJoiner(",");
+        sj.add("aa").add("bb").add("cc").add("dd");
+        System.out.println(sj.toString());
+
+        //---with prefix and suffix
+        StringJoiner sj2 = new StringJoiner("/", "prefix-", "-suffix");
+        sj2.add("aa").add("bb").add("cc").add("dd");
+        System.out.println(sj2.toString());
+
+        //----String.join
+            //StringJoiner is used internally by static String.join().
+
+        String joinedStr = String.join("-", "aaaa", "bbbb");
+        System.out.println(joinedStr);
+
+        //---- Join a List by a delimiter.
+        List<String> listtt = Arrays.asList("java", "python", "nodejs", "ruby");
+        String resu = String.join(", ", listtt);
+        System.out.println(resu);
+
+        //-----Collectors.joining
+        String reesult = listtt.stream().map(x -> x).collect(Collectors.joining(" | ", "(", ")"));
+        System.out.println(reesult);
+
+        System.out.println("----------------Java 8 Stream – Read a file line by line-------------------");
+        //------------------------------------------------------------------
+        String fileName = "D:\\IntellijWorkspace\\TestFile.txt";
+        try(Stream<String> filestream = Files.lines(Paths.get(fileName))){ // It Files not File
+            filestream.filter(x -> !"row 1".equals(x))
+                    .map(y -> y.toUpperCase())
+                    .forEach(System.out::println);
+            //String fileStr = filestream.collect(Collectors.joining(","));
+           // System.out.println(fileStr);
+
+        } catch (IOException ex){
+            System.out.println("found io exception");
+        }
+
+        //---BufferedReader + Stream
+        try(BufferedReader br = Files.newBufferedReader(Paths.get(fileName))){
+            List<String> brList = br.lines().collect(Collectors.toList()); // br.lines return stream
+            System.out.println(brList);
+        }catch (IOException ex){
+            System.out.println("exception occured");
+        }
+
+
+        System.out.println("----------------How to join Arrays-------------------");
+        //------------------------------------------------------------------
+        //--Apache common lang
+        //ArrayUtils.addAll(arr1, s2);
+
+        int[] arr1= new int[]{ 1,3,4,5};
+        int[] arr2= new int[]{ 11,13,14,15};
+
+        int[] arr3 = IntStream.concat(Arrays.stream(arr1), Arrays.stream(arr2)).toArray();
+        System.out.println(Arrays.toString(arr3));
+
+        System.out.println("----------------Convert String to Stream Char-------------------");
+        //------------------------------------------------------------------
+        String ssstr = "nare";
+        ssstr.chars() //IntStream
+                .mapToObj(x -> (char)x) //Stream<Character>
+                .forEach(System.out::println);
+
+
+        System.out.println("----------------convert a primitive Array to List-------------------");
+        //------------------------------------------------------------------
+        int[] number = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+
+        List<Integer> intList = Arrays.stream(number)
+                .boxed()
+                .collect(Collectors.toList());
+        System.out.println(intList);
+
+        System.out.println("----------------Check if Array contains a certain value------------------");
+        //------------------------------------------------------------------
+
+        String[] alphabet = new String[]{"A", "B", "C"}; // normal way is to convert to list and call contains
+        boolean matchPresent = Arrays.stream(alphabet).anyMatch( x -> "A".equals(x));
+        System.out.println(matchPresent);
+
+
+
+
+
+
+
+
+
+
+
 
 
 
