@@ -27,12 +27,14 @@ public class Runner {
 
         System.out.println("----------------Comparator Example with Lambda------------");
         //---------------------------------------------------------------------------------
-        developerList.sort(( d1,  d2) -> d1.getName().compareTo(d2.getName()));
+        getDevelopers().sort(( d1,  d2) -> d1.getName().compareTo(d2.getName()));
         //developerList.sort(( Developer d1, Developer d2) -> d1.getName().compareTo(d2.getName()));
+
+        getDevelopers().sort(Comparator.comparing(Developer::getName));
 
         developerList.forEach(d -> System.out.println(d.getName()));
 
-        //---Without Lambda
+        System.out.println("---Without Lambda---");
         Collections.sort(developerList, new Comparator<Developer>() {
             @Override
             public int compare(Developer o1, Developer o2) {
@@ -43,6 +45,22 @@ public class Runner {
         for (Developer developer : developerList) {
             System.out.println(developer.getName());
         }
+
+        System.out.println("----Sort using strem----");
+        getDevelopers()
+                .stream()
+                .sorted(Comparator.comparing(Developer::getName))
+                .forEach(dev -> System.out.println(dev.getName()));
+
+        System.out.println("----Multiple Sorting Criteria-------");
+        Comparator<Developer> byName = (e1, e2) -> e1.getName().compareTo(e2.getName());
+        Comparator<Developer> bySalary = (e1, e2) -> e1.getSalary().compareTo(e2.getSalary());
+
+        getDevelopers()
+                .stream()
+                .sorted(byName.thenComparing(bySalary))
+                .forEach(dev -> System.out.println(dev.getName()+" "+ dev.getSalary()));
+
 
 
 
@@ -472,6 +490,7 @@ public class Runner {
 
         result.add(new Developer("mkyong", new BigDecimal("70000"), 33));
         result.add(new Developer("alvin", new BigDecimal("80000"), 20));
+        result.add(new Developer("alvin", new BigDecimal("60000"), 20));
         result.add(new Developer("jason", new BigDecimal("100000"), 10));
         result.add(new Developer("iris", new BigDecimal("170000"), 55));
 
