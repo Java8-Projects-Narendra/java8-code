@@ -178,7 +178,7 @@ public class Runner {
         //------------------------------------------------------------------
         Map<String, Integer> unsortedMap = getHashmapSample();
         Map<String, Integer> sortedMap = unsortedMap.entrySet().stream()  //unsortedMap.strem() doesn't works
-                .sorted(Map.Entry.comparingByKey())
+                .sorted(Map.Entry.comparingByKey())// Everything Map.Entry
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue,
                         (oldValue, newValue) -> oldValue, LinkedHashMap::new)); // toMap() will returns HashMap by default, we need LinkedHashMap to keep the order.
         System.out.println(sortedMap);
@@ -429,6 +429,42 @@ public class Runner {
         String[] alphabet = new String[]{"A", "B", "C"}; // normal way is to convert to list and call contains
         boolean matchPresent = Arrays.stream(alphabet).anyMatch( x -> "A".equals(x));
         System.out.println(matchPresent);
+
+
+        System.out.println("---------------Summary Statistics------------------------");
+        List<Developer> personList =  Arrays.asList(new Developer("a",new BigDecimal("70000"),20), new Developer("b",new BigDecimal("70000"), 43), new Developer("c",new BigDecimal("70000") ,33));
+
+        //Find min max age
+        IntSummaryStatistics statistics = personList.stream()
+                .map( dev-> dev.getAge())
+                .mapToInt(Integer :: intValue) //Convert Integer to int
+                .summaryStatistics();
+        System.out.println("Max age: "+statistics.getMax());
+        System.out.println("Max age: "+statistics.getMin());
+
+        System.out.println("---------------------findFirst vs findAny-------------");
+        //The findAny() method returns any element from a Stream while the findFirst() method returns the first element in a Stream.
+        List<String> list1 = Arrays.asList("A","B","C","D");
+
+        Optional<String> result1 = list1.stream().findAny();
+        System.out.println("isPresent: "+result1.isPresent() +" get Value: "+result1.get());
+
+        System.out.println("---------------------findFirst non repeatable character-------------");
+
+        String str1 = "AABBCCDDEFGGHH";
+        Optional<Long> resssult = str1.chars()
+                .mapToObj(c -> Character.valueOf((char)c))
+                .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()))
+                .entrySet()
+                .stream()
+                .filter(entry -> entry.getValue() == 1L)
+                .findFirst()
+                .map( entry -> entry.getValue() );
+
+        System.out.println("first Non repeatable char :"+(char)resssult.get().intValue());
+
+
+
 
 
 
