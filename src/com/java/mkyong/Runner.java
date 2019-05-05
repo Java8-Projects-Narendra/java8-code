@@ -32,7 +32,7 @@ public class Runner {
 
         getDevelopers().sort(Comparator.comparing(Developer::getName));
 
-        developerList.forEach(d -> System.out.println(d.getName()));
+        developerList.forEach(d -> System.out.println(d.getName()));//Internal loop
 
         System.out.println("---Without Lambda---");
         Collections.sort(developerList, new Comparator<Developer>() {
@@ -46,7 +46,7 @@ public class Runner {
             System.out.println(developer.getName());
         }
 
-        System.out.println("----Sort using strem----");
+        System.out.println("----Sort using strem----");// its sorted not sort
         getDevelopers()
                 .stream()
                 .sorted(Comparator.comparing(Developer::getName))
@@ -58,7 +58,7 @@ public class Runner {
 
         getDevelopers()
                 .stream()
-                .sorted(byName.thenComparing(bySalary))
+                .sorted(byName.thenComparing(bySalary))//******************
                 .forEach(dev -> System.out.println(dev.getName()+" "+ dev.getSalary()));
 
 
@@ -463,6 +463,60 @@ public class Runner {
 
         System.out.println("first Non repeatable char :"+(char)resssult.get().intValue());
 
+        System.out.println("---------------------Find Employee with min age-------------");
+        List<Developer> personList2 =  Arrays.asList(new Developer("a",new BigDecimal("70000"),20),
+                new Developer("b",new BigDecimal("70000"), 43),
+                new Developer("c",new BigDecimal("70000") ,33));
+
+        Optional<Developer> developerWithMinAge = personList2.stream()
+                .min(Comparator.comparing(Developer::getAge));
+        System.out.println(developerWithMinAge);
+
+        System.out.println("---------------------Merge two Array-------------");
+        String[] strArr1 = new String[]{"a", "b", "c", "d"};
+        String[] strArr2 = new String[]{"e", "f", "g"};
+
+        int[] intArrr1 = new int[]{1,2,3,4};
+        int[] intArrr2 = new int[]{5,6,7};
+
+        Integer[] mergedIntArr = Stream.concat(Arrays.stream(intArrr1).boxed(), Arrays.stream(intArrr2).boxed())// Using boxec
+                .toArray(Integer[]::new);
+        System.out.println("mergedIntArr: "+Arrays.toString(mergedIntArr));
+
+        //---Way1
+        String[] mergedStrArr1 = Stream.concat(Arrays.stream(strArr1), Arrays.stream(strArr2))
+                .toArray(String[]::new);
+        System.out.println("mergedStrArr1: "+Arrays.toString(mergedStrArr1));
+
+
+        //---Way2
+        String[] mergedStrArr2 = Stream.of(strArr1, strArr2)
+                .flatMap(Stream::of)
+                .toArray(String[]::new);
+        System.out.println("mergedStrArr2: "+Arrays.toString(mergedStrArr2));
+
+        //--------System.arraycopy Java
+        String[] mergedStrArr3 = new String[strArr1.length + strArr2.length];
+        System.arraycopy(strArr1, 0, mergedStrArr3, 0, strArr1.length);
+        System.arraycopy(strArr2, 0, mergedStrArr3, strArr1.length, strArr2.length);
+        System.out.println("mergedStrArr3: "+mergedStrArr3);
+        //src - Source array (Object type)
+        //srcPos - Starting position in Source array (Integer type)
+        //dest - Destination array (Object Type)
+        //destpos - Starting position in destination array (Integer type)
+        //length - Number of elements to be copied (Integer type)
+
+        //------Using ArrayUtils
+        //org.apache.commons.lang3.ArrayUtils.addAll(arr1, arr2)
+
+        System.out.println("-----------Each Double of Array------------");
+        Integer[] intArr1 = new Integer[]{1,2,3};
+        Integer[] intArr2 = new Integer[]{4,5,6};
+        Object[] eachDoubleArr = Stream.of(intArr1)
+                .map( s -> eachDouble(s, intArr2))
+                .flatMap(s -> s)
+                .toArray();
+        System.out.println("eachDoubleArr: "+Arrays.toString(eachDoubleArr));
 
 
 
@@ -473,38 +527,10 @@ public class Runner {
 
 
 
+    }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    public static Stream<Integer[]> eachDouble(Integer s, Integer[] arr){
+        return Arrays.stream(arr).map(a -> new Integer[]{a, s});
     }
 
     public static String getMyDefault() {

@@ -115,7 +115,7 @@ public class DateTimeNewApi {
         //The Period class is widely used to modify values of given a date or to obtain the difference between two dates:
         LocalDate initialDate = LocalDate.parse("2007-05-10");
         LocalDate finalDate = initialDate.plus(Period.ofDays(5));
-        Period period = Period.between(finalDate, initialDate);
+        Period period = Period.between(finalDate, initialDate);// return Period object
         int five = period.getDays();
 
         System.out.println("======================Duration==========================");
