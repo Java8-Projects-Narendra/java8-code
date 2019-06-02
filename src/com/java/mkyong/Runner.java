@@ -30,7 +30,7 @@ public class Runner {
         getDevelopers().sort(( d1,  d2) -> d1.getName().compareTo(d2.getName()));
         //developerList.sort(( Developer d1, Developer d2) -> d1.getName().compareTo(d2.getName()));
 
-        getDevelopers().sort(Comparator.comparing(Developer::getName));
+        getDevelopers().sort(Comparator.comparing(Developer::getName).reversed());// reverse comparator
 
         developerList.forEach(d -> System.out.println(d.getName()));//Internal loop
 
@@ -463,7 +463,7 @@ public class Runner {
 
         System.out.println("first Non repeatable char :"+(char)resssult.get().intValue());
 
-        System.out.println("---------------------Find Employee with min age-------------");
+        System.out.println("---------------------min max avg Find Employee with min age-------------");
         List<Developer> personList2 =  Arrays.asList(new Developer("a",new BigDecimal("70000"),20),
                 new Developer("b",new BigDecimal("70000"), 43),
                 new Developer("c",new BigDecimal("70000") ,33));
@@ -471,6 +471,10 @@ public class Runner {
         Optional<Developer> developerWithMinAge = personList2.stream()
                 .min(Comparator.comparing(Developer::getAge));
         System.out.println(developerWithMinAge);
+
+        Integer maxNumber = Stream.of(1, 2, 3, 4, 5, 6, 7, 8, 9)
+                .max(Comparator.comparing(Integer::valueOf))
+                .get();
 
         System.out.println("---------------------Merge two Array-------------");
         String[] strArr1 = new String[]{"a", "b", "c", "d"};

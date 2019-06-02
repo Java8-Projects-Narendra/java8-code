@@ -7,6 +7,7 @@ public class ImplementorClass extends AbstractClassC implements InterfaceA, Inte
         super.defaultMethod(); // Abstract class method
     }
 
+    //In case extending abstract class and implementing interface, both having same method, then also need to override method
 
 
     public static void main(String[] args) {
