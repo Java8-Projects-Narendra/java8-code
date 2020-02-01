@@ -24,15 +24,16 @@ public class Runner {
         // From http://www.mkyong.com/tutorials/java-8-tutorials/
 
         List<Developer> developerList = getDevelopers();
+        getDevelopers().sort(Comparator.comparing(Developer::getName));
 
         System.out.println("----------------Comparator Example with Lambda------------");
         //---------------------------------------------------------------------------------
         getDevelopers().sort(( d1,  d2) -> d1.getName().compareTo(d2.getName()));
         //developerList.sort(( Developer d1, Developer d2) -> d1.getName().compareTo(d2.getName()));
 
-        getDevelopers().sort(Comparator.comparing(Developer::getName).reversed());// reverse comparator
+        getDevelopers().sort(Comparator.comparing(Developer::getName).reversed().thenComparing(Developer::getSalary));// reverse comparator
 
-        developerList.forEach(d -> System.out.println(d.getName()));//Internal loop
+        developerList.forEach(d -> System.out.println(d.getName()));//Internal loop, takes consumer
 
         System.out.println("---Without Lambda---");
         Collections.sort(developerList, new Comparator<Developer>() {
@@ -423,12 +424,20 @@ public class Runner {
                 .collect(Collectors.toList());
         System.out.println(intList);
 
-        System.out.println("----------------Check if Array contains a certain value------------------");
+        System.out.println("----------------Check if Array contains a certain value, anyMatch------------------");
         //------------------------------------------------------------------
 
         String[] alphabet = new String[]{"A", "B", "C"}; // normal way is to convert to list and call contains
         boolean matchPresent = Arrays.stream(alphabet).anyMatch( x -> "A".equals(x));
         System.out.println(matchPresent);
+
+        int[] arr = new int[]{-1,2,0,3};
+        boolean zeroPresent = IntStream.of(arr).anyMatch(n -> n == 0);
+        System.out.println("zeroPresent :"+zeroPresent);
+
+        //negative values count
+        long negativeLength = IntStream.of(arr).filter(n -> n<0).count();
+        System.out.println("negativeLength "+negativeLength);
 
 
         System.out.println("---------------Summary Statistics------------------------");
